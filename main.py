@@ -3,7 +3,7 @@ import requests
 import sys
 import time
 import json
-import curses
+#import curses
 import spotipy
 import spotipy.util as util
 import webbrowser
