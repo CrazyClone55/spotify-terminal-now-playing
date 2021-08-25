@@ -3,7 +3,8 @@ import requests
 import sys
 import time
 import json
-#import curses
+import curses
+from curses import wrapper
 import spotipy
 import spotipy.util as util
 import webbrowser
@@ -20,6 +21,15 @@ CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
 
+
+#initialize curses screen
+stdstr=curses.initscr()
+curses.noecho()
+curses.cbreak()
+stdstr.keypad(True)
+
+#stop application
+curses.nocbreak()
 
 #define token
 token = ""
@@ -129,6 +139,7 @@ def do_action(actionToDo):
         login(username)
         token=login(username)
         spotifyObject=spotipy.Spotify(auth=token)
+
 
 
 while True:
