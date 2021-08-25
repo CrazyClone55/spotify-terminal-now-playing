@@ -119,11 +119,6 @@ else:
     token = login(username)
 
 
-
-
-
-
-
 spotifyObject=spotipy.Spotify(auth=token)
 
 
