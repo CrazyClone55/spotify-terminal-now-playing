@@ -129,11 +129,13 @@ while True:
         print("nothing is playing")
         time.sleep(5)
     else:
-        print(json.dumps(current, sort_keys=True, indent=4))
+        #print(json.dumps(current, sort_keys=True, indent=4))
         track = current['item']['name']
         artist = current['item']['artists'][0]['name']
         imageURL = current['item']['album']['images'][0]['url']
 
+
+        os.system("clear")
         print(track + " - " + artist)
         #print(convertImage(imageURL))
         print(displayImage(imageURL))
