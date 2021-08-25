@@ -132,7 +132,7 @@ def do_action(actionToDo):
 
 
 while True:
-    current = spotifyObject.current_user_playing_track()
+    current = do_action(spotifyObject.current_user_playing_track())
     if current == None:
         print("nothing is playing")
         time.sleep(5)
@@ -151,7 +151,7 @@ while True:
         newTrack = current['item']['name']
 
         while newTrack == track:
-            newTrack = spotifyObject.current_user_playing_track()
+            newTrack = do_action(spotifyObject.current_user_playing_track())
             if newTrack == None:
                 break
             newTrack = newTrack['item']['name']
