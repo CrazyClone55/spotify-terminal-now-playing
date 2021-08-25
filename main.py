@@ -121,6 +121,14 @@ else:
 
 spotifyObject=spotipy.Spotify(auth=token)
 
+#try except loop
+def do_action(actionToDo):
+    try:
+        return actionToDo()
+    except:
+        login(username)
+        token=login(username)
+        spotifyObject=spotipy.Spotify(auth=token)
 
 
 while True:
