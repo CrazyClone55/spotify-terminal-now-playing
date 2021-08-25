@@ -146,7 +146,10 @@ while True:
         newTrack = current['item']['name']
 
         while newTrack == track:
-            newTrack = spotifyObject.current_user_playing_track()['item']['name']
+            newTrack = spotifyObject.current_user_playing_track()
+            if newTrack == None:
+                break
+            newTrack = newTrack['item']['name']
             time.sleep(5)
 
 
