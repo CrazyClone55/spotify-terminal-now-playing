@@ -134,8 +134,11 @@ def do_action(actionToDo):
 while True:
     current = do_action(spotifyObject.current_user_playing_track())
     if current == None:
+        os.system("clear")
         print("nothing is playing")
-        time.sleep(5)
+        while current == None:
+            current = do_action(spotifyObject.current_user_playing_track())
+            time.sleep(5)
     else:
         #print(json.dumps(current, sort_keys=True, indent=4))
         track = current['item']['name']
