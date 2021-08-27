@@ -1,35 +1,22 @@
 import os
-import requests
 import sys
 import time
-import json
-import curses
-from curses import wrapper
 import spotipy
 import spotipy.util as util
-import webbrowser
-import argparse
 import urllib.request
 from json.decoder import JSONDecodeError
 import PIL.Image
 import climage
 from pyfiglet import Figlet
 from dotenv import load_dotenv
+from blessings import Terminal
 
 load_dotenv()
 CLIENT_ID = os.getenv('CLIENT_ID')
 CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 REDIRECT_URI = os.getenv('REDIRECT_URI')
 
-
-#initialize curses screen
-stdstr=curses.initscr()
-curses.noecho()
-curses.cbreak()
-stdstr.keypad(True)
-
-#stop application
-curses.nocbreak()
+f=Figlet()
 
 #define token
 token = ""
@@ -72,7 +59,7 @@ def convertImage(url, new_width=100):
 def displayImage(url):
     urllib.request.urlretrieve(url, "img.png")
     img = PIL.Image.open("img.png")
-    output = climage.convert("img.png")
+    output = climage.convert("img.png", is_unicode=False)
     return output
 
 
@@ -84,7 +71,6 @@ def login(username):
         #tries to login
         token = util.prompt_for_user_token(username, scope, client_id=CLIENT_ID, client_secret=CLIENT_SECRET, redirect_uri=REDIRECT_URI)
         return token
-        print("got token")
     except (AttributeError, JSONDecodeError):
         #if theres an error remove the cache and try again
         os.remove(f".cache-{username}")
@@ -110,7 +96,7 @@ if argument == True:
         #wipe existing username
         os.remove("username.txt")
     except:
-        print("writing new username file")
+        None
     #set cache username to new username
     print(username, file=open('username.txt', 'w'))
 
@@ -129,7 +115,7 @@ else:
     token = login(username)
 
 
-spotifyObject=spotipy.Spotify(auth=token)
+
 
 #try except loop
 def do_action(actionToDo):
@@ -140,7 +126,7 @@ def do_action(actionToDo):
         token=login(username)
         spotifyObject=spotipy.Spotify(auth=token)
 
-
+spotifyObject=spotipy.Spotify(auth=token)
 
 while True:
     current = do_action(spotifyObject.current_user_playing_track())
@@ -155,13 +141,14 @@ while True:
         track = current['item']['name']
         artist = current['item']['artists'][0]['name']
         imageURL = current['item']['album']['images'][0]['url']
-
-
+        t = Terminal()
         os.system("clear")
-        print(track + " - " + artist)
-        #print(convertImage(imageURL))
+        output = track + " - " + artist
+        with t.location(t.width- 102, t.height - 10):
+            print(f.renderText(output))
         print(displayImage(imageURL))
-
+        print(t.width)
+        print(t.height)
         newTrack = current['item']['name']
 
         while newTrack == track:
